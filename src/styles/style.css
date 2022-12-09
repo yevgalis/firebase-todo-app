@@ -1,3 +1,18 @@
+@import "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,500&display=swap";
+
+:root {
+  --color-primary: #333333;
+  --color-secondary: #828d9c;
+  --color-accent: #6c63ff;
+  --color-white: #ffffff;
+  --color-error: #dc3545;
+  --input-disabled-color: #f1f1f1;
+  --input-border-color: #d0d7de;
+  --form-bg-color: #f6f8fa;
+  --btn-bg-color-primary: var(--color-accent);
+  --base-font-size: 14px;
+}
+
 html {
   height: 100%;
   box-sizing: border-box;
@@ -13,8 +28,10 @@ body {
   margin: 0;
   min-width: 320px;
   height: 100%;
-  font-family: "Segoe UI", "Open Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
+  font-size: var(--base-font-size);
   line-height: 1.5;
+  color: var(--color-primary);
   word-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,4 +43,17 @@ a {
 
 #root {
   height: 100%;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px;
+  border: 1px solid transparent;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --base-font-size: 12px;
+  }
 }
