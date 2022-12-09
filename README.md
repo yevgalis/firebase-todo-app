@@ -1,6 +1,6 @@
 ## Introduction
 
-This is a webpack boilerplate for React projects. It includes `typescript`, `babel`, support for `css-modules`, `scss`, runs `eslint` and `stylelint` on commit (pre-commit hook using `husky` and `lint-staged`) etc.
+This is a webpack boilerplate for React projects. It includes `typescript`, `babel`, support for `css-modules`, `scss`, runs `eslint` and `stylelint` on commit (pre-commit hook using `husky` and `lint-staged`) etc
 
 ## Table Of Contents:
 - [Usage](#usage)
