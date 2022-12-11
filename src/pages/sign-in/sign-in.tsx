@@ -8,7 +8,8 @@ import { useAuth } from '@/authContext';
 import './sign-in.css';
 
 const SignIn = () => {
-  // login: todo-admin@mail.com   password: admin123
+  // login: todo-admin@mail.com
+  //  password: admin123
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState('');

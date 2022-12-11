@@ -1,5 +1,4 @@
-##
-Credentials to login into application:
+## Credentials to login into application:
 
 **login:** todo-admin@mail.com
 
