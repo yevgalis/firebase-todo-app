@@ -8,11 +8,12 @@ import './task-modal.css';
 
 interface IProps {
   task: ITask | null;
+  userId: string | null;
   fetchTasks: VoidFunction;
   closeModal: VoidFunction;
 }
 
-const TaskModal: FC<IProps> = ({ task, fetchTasks, closeModal }: IProps) => {
+const TaskModal: FC<IProps> = ({ task, userId, fetchTasks, closeModal }: IProps) => {
   const [title, setTitle] = useState(task?.title || '');
   const [description, setDescription] = useState(task?.description || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +35,6 @@ const TaskModal: FC<IProps> = ({ task, fetchTasks, closeModal }: IProps) => {
       return;
     }
 
-    const execFunction = task?.id ? updateTask : createTask;
     const data = {
       title,
       description,
@@ -44,7 +44,10 @@ const TaskModal: FC<IProps> = ({ task, fetchTasks, closeModal }: IProps) => {
     };
 
     setIsLoading(true);
-    execFunction(data)
+    Promise.resolve()
+      .then(() => {
+        return task?.id ? updateTask(data) : createTask(data, userId);
+      })
       .then(fetchTasks)
       .finally(() => {
         setIsLoading(false);

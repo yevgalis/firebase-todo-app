@@ -1,23 +1,31 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Title from '@/components/title/title';
 import SecondaryText from '@/components/secondary-text/secondary-text';
 import Button from '@/components/button/button';
 import Input from '@/components/input/input';
+import { useAuth } from '@/authContext';
 import './sign-in.css';
 
 const SignIn = () => {
+  // login: todo-admin@mail.com   password: admin123
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState('');
 
+  const { loginWithEmail } = useAuth();
+  const navigate = useNavigate();
+
   const onEmailInput = (evt: FormEvent<HTMLInputElement>) => {
     const { value } = evt.target as HTMLInputElement;
     setEmail(value);
+    setFormError('');
   };
 
   const onPasswordInput = (evt: FormEvent<HTMLInputElement>) => {
     const { value } = evt.target as HTMLInputElement;
     setPassword(value);
+    setFormError('');
   };
 
   const onFormSubmit = (evt: FormEvent) => {
@@ -27,8 +35,10 @@ const SignIn = () => {
       setFormError('Email address and password are required!');
       return;
     }
-    // eslint-disable-next-line no-console
-    console.log(email, password);
+
+    loginWithEmail(email, password)
+      .then(() => navigate('/tasks'))
+      .catch((error) => setFormError(error.message));
   };
 
   return (

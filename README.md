@@ -1,3 +1,10 @@
+##
+Credentials to login into application:
+
+**login:** todo-admin@mail.com
+
+**password:** admin123
+
 ## Introduction
 
 This is a webpack boilerplate for React projects. It includes `typescript`, `babel`, support for `css-modules`, `scss`, runs `eslint` and `stylelint` on commit (pre-commit hook using `husky` and `lint-staged`) etc.

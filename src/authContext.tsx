@@ -2,14 +2,16 @@ import { createContext, FC, useState, useContext, useEffect } from 'react';
 import { FirebaseApp } from 'firebase/app';
 import {
   getAuth,
+  signInWithEmailAndPassword,
   User,
-  // signInWithEmailAndPassword,
+  UserCredential,
   browserLocalPersistence,
 } from 'firebase/auth';
 
 interface IAuthContext {
-  isAuthorized: boolean | null,
+  isAuthorized: boolean | null;
   user: User | null;
+  loginWithEmail: (email: string, password: string) => Promise<UserCredential | null>;
 }
 
 interface IAuthProviderProps {
@@ -20,6 +22,7 @@ interface IAuthProviderProps {
 export const AuthContext = createContext<IAuthContext>({
   isAuthorized: false,
   user: null,
+  loginWithEmail: () => Promise.resolve(null),
 });
 
 export const useAuth = (): IAuthContext => {
@@ -31,9 +34,19 @@ export const AuthProvider: FC<IAuthProviderProps> = ({ firebaseApp, children }: 
   const [user, setUser] = useState<IAuthContext['user']>(null);
   const [auth] = useState(getAuth(firebaseApp));
 
+  const loginWithEmail = (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        console.error('signInWithEmailAndPassword: ', error);
+        throw new Error(error);
+      });
+  };
+
   useEffect(() => {
     auth.setPersistence(browserLocalPersistence);
-    // signInWithEmailAndPassword(auth, 'todo-admin@mail.com', 'admin123');
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -47,7 +60,7 @@ export const AuthProvider: FC<IAuthProviderProps> = ({ firebaseApp, children }: 
   }, [auth]);
 
   return (
-    <AuthContext.Provider value={{ isAuthorized, user }}>
+    <AuthContext.Provider value={{ isAuthorized, user, loginWithEmail }}>
       {children}
     </AuthContext.Provider>
   );
