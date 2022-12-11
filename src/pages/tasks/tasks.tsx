@@ -2,21 +2,25 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import TaskModal from '@/components/task-modal/task-modal';
 import Button from '@/components/button/button';
 import TaskItem from '@/components/task-item/task-item';
-import { ITask } from '@/types';
+import { useAuth } from '@/authContext';
 import { deleteTask, getTasks, updateTask } from '@/api';
-import './user-tasks.css';
+import { ITask } from '@/types';
+import './tasks.css';
 
 const TIMER_DURATION = 2000;
 
-const UserTasks = () => {
+const Tasks = () => {
+  const { user } = useAuth();
   const [taskList, setTaskList] = useState<ITask[]>([]);
   const [hasTaskModal, setHasTaskModal] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<ITask | null>(null);
   const [timers, setTimers] = useState<any>({});
 
   const fetchTasks = async () => {
-    const data: ITask[] = await getTasks();
-    setTaskList(data);
+    if (user) {
+      const data: ITask[] = await getTasks(user.uid);
+      setTaskList(data);
+    }
   };
 
   const clearTimer = (id: string) => {
@@ -29,9 +33,9 @@ const UserTasks = () => {
     setHasTaskModal(true);
   };
 
-  const onDeleteTaskClick = async (id: string) => {
-    clearTimer(id);
-    await deleteTask(id);
+  const onDeleteTaskClick = async (taskId: string) => {
+    clearTimer(taskId);
+    await deleteTask(taskId);
     await fetchTasks();
   };
 
@@ -69,7 +73,12 @@ const UserTasks = () => {
   return (
     <div className="container">
       {hasTaskModal && (
-        <TaskModal task={taskToEdit} fetchTasks={fetchTasks} closeModal={closeModal} />
+        <TaskModal
+          task={taskToEdit}
+          userId={user?.uid || null}
+          fetchTasks={fetchTasks}
+          closeModal={closeModal}
+        />
       )}
       <header className="header">
         <h1 className="header__title">Hello, tiger 👋</h1>
@@ -101,4 +110,4 @@ const UserTasks = () => {
   );
 };
 
-export default UserTasks;
+export default Tasks;

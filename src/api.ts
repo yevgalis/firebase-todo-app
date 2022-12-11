@@ -35,13 +35,14 @@ export const initializeAPI = (): FirebaseApp => {
   return firebaseApp;
 };
 
-export const getTasks = async () => {
+export const getTasks = async (id: string) => {
   const db = getFirestore();
   const tasks: ITask[] = [];
 
   try {
     const req = query(
       collection(db, 'tasks'),
+      where('userId', '==', id),
       where('done', '==', false),
       orderBy('createDate', 'desc')
     );
@@ -59,11 +60,12 @@ export const getTasks = async () => {
   }
 };
 
-export const createTask = async (data: ITask) => {
+export const createTask = async (data: ITask, userId: string | null) => {
   const db = getFirestore();
 
   try {
     await addDoc(collection(db, 'tasks'), {
+      userId,
       title: data.title,
       description: data.description,
       createDate: data.createDate,

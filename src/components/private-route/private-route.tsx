@@ -1,12 +1,12 @@
-import { Route, RouteProps } from 'react-router-dom';
-import { FC } from 'react';
+import React, { ElementType, FC } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/authContext';
 
-type TProps = {
-  children: React.ReactNode;
-} & RouteProps;
+interface IProps {
+  Component: ElementType;
+}
 
-const PrivateRoute: FC<TProps> = ({ children }: TProps) => {
+const PrivateRoute: FC<IProps> = ({ Component }: IProps) => {
   const { isAuthorized } = useAuth();
 
   if (isAuthorized === null) {
@@ -14,9 +14,13 @@ const PrivateRoute: FC<TProps> = ({ children }: TProps) => {
   }
 
   return (
-    <Route>
-      {children}
-    </Route>
+    <React.Fragment>
+      {isAuthorized ? (
+        <Component />
+      ) : (
+        <Navigate to="/sign-in" />
+      )}
+    </React.Fragment>
   );
 };
 

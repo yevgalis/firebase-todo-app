@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import App from '@/components/app/app';
 import { AuthProvider } from '@/authContext';
 import { initializeAPI } from '@/api';
@@ -13,9 +13,9 @@ const root = createRoot(document.getElementById('root')!);
 root.render(
   <StrictMode>
     <AuthProvider firebaseApp={firebaseApp}>
-      <BrowserRouter>
+      <Router>
         <App />
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   </StrictMode>
 );
