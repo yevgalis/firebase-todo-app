@@ -1,6 +1,6 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
-  "ignoreFiles": ["build/**/*.html", "build/**/*.css"],
+  "ignoreFiles": ["build/**/*.html", "build/**/*.css", "docs/**/*.html", "docs/**/*.css"],
   "rules": {
     "color-hex-case": "lower",
     "color-hex-length": "long",
