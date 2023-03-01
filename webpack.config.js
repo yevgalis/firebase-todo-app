@@ -1,6 +1,5 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const EslintWebpackPlugin = require('eslint-webpack-plugin');
@@ -12,9 +11,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   bail: isProduction,
-  devtool: isProduction ? 'source-map' : 'inline-source-map',
+  devtool: isProduction ? false : 'eval-cheap-module-source-map',
   entry: './src/index.tsx',
   output: {
+    clean: true,
     path: path.join(__dirname, 'build'),
     filename: 'js/[name].[contenthash].js',
   },
@@ -22,8 +22,7 @@ module.exports = {
     'static': {
       directory: path.join(__dirname, 'build'),
     },
-    open: true,
-    hot: true,
+    open: false,
     port: 1337,
     historyApiFallback: true,
   },
@@ -42,7 +41,7 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
     },
-    runtimeChunk: true,
+    runtimeChunk: isProduction ? false : 'single',
   },
   module: {
     rules: [
@@ -135,7 +134,6 @@ module.exports = {
     },
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(__dirname, './src/index.html'),
